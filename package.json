@@ -1,0 +1,16 @@
+{
+  "name": "rainyspring",
+  "version": "1.0.0",
+  "description": "playing with ruuvi tags",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "v.blair",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "influx": "^5.0.7"
+  }
+}
