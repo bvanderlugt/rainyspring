@@ -182,32 +182,28 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "compose": {
-            "db": {
-              "image": "mysql",
+            "influxdb": {
+              "image": "influxdb",
               "ports": [
-                "3306:3306"
+                "8086:8086"
               ],
               "volumes": [
-                "/var/lib/mysql:/var/lib/mysql"
-              ],
-              "environment": [
-                "MYSQL_ROOT_PASSWORD"
+                "/var/lib/influxdb:/var/lib/influxdb"
               ]
             },
-            "wordpress": {
-              "image": "node",
+            "web": {
+              "image": "blairvee/rainyspring",
               "ports": [
                 "80:8080"
               ],
               "links": [
-                "db:mysql"
+                "influxdb"
+              ],
+              "environment":
+              [
+                "DB_HOSTNAME=influxdb"
               ]
             }
-          }
-        },
-        "protectedSettings": {
-          "environment": {
-            "MYSQL_ROOT_PASSWORD": "[parameters('mysqlPassword')]"
           }
         }
       }
