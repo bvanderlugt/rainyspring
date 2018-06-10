@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     build: ./src/
+    # image: 'blairvee/rainyspring'
     ports:
     - "8080:8080"
     links:
