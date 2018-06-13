@@ -4,13 +4,13 @@ services:
     build: ./src/
     # image: 'blairvee/rainyspring'
     ports:
-    - "8080:8080"
+      - "8080:8080"
     links:
-    - influxdb
+      - influxdb
     depends_on:
       - influxdb
     environment:
-      DB_HOSTNAME: influxdb
+      DB_HOSTNAME: localhost
   influxdb:
     image: influxdb
     ports:

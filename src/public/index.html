@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta charset="utf-8">
+    <title>RainySpring</title>
+
+  </head>
+
+  <body>
+
+    <h1>RainySpring Bluetooth Web</h1>
+
+    <br>
+
+    <div id="container">
+      <button id="scan">scan</button>
+      <button id="infoRequest">request</button>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script>
+
+    /*
+    CA:EF:2B:C8:8B:53/54
+    */
+    // navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
+    //   .then(device => { /* ... */ })
+    //   .catch(error => { console.log(error); });
+
+      var getScanButton = document.getElementById('scan');
+      getScanButton.addEventListener('click', function() {
+        app.scan();
+      });
+
+      var getInfoRequestButton = document.getElementById('infoRequest');
+      getInfoRequestButton.addEventListener('click', function() {
+        console.log('RESPONES@!!@ ', app.request());
+      })
+
+
+    </script>
+
+  </body>
+
+</html>
