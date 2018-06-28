@@ -6,6 +6,46 @@ var path = require('path')
 var bodyParser = require('body-parser');
 var base64Decode = require('./utils/decoder').base64_decode
 
+
+/* -------------
+DATABASE
+------------- */
+const hostname = process.env.DB_HOSTNAME || 'localhost'
+const influx = new Influx.InfluxDB({
+  host: hostname,
+  database: 'weather_db',
+  schema: [
+    {
+      measurement: 'weather',
+      fields: {
+        humidity: Influx.FieldType.FLOAT,
+        temperature: Influx.FieldType.FLOAT,
+        air_pressure: Influx.FieldType.FLOAT
+      },
+      tags: [
+        'beaconId'
+      ]
+    }
+  ]
+})
+
+// initialize db and boot app
+influx.getDatabaseNames()
+  .then(names => {
+    if (!names.includes('weather_db')) {
+      return influx.createDatabase('weather_db')
+    }
+  })
+  .then(() => {
+    http.createServer(app).listen(8080, function() {
+      console.log('Listening on port 8080')
+    })
+  })
+  .catch(err => {
+    console.log(`Error creating Influx database! ${err.stack}`)
+  })
+
+
 const dbWriter = (req, res, next) => {
   console.log('handling db write')
   if (req.path != '/incoming') {
@@ -33,6 +73,10 @@ const dbWriter = (req, res, next) => {
 
   return next()
 }
+
+/* -------------
+APP
+------------- */
 
 const app = express()
 
@@ -121,41 +165,3 @@ const dbWritePoints = (weatherObj) => {
     }
   ])
 }
-
-/* -------------
-DATABASE
-------------- */
-
-const influx = new Influx.InfluxDB({
-  database: 'weather_db',
-  schema: [
-    {
-      measurement: 'weather',
-      fields: {
-        humidity: Influx.FieldType.FLOAT,
-        temperature: Influx.FieldType.FLOAT,
-        air_pressure: Influx.FieldType.FLOAT
-      },
-      tags: [
-        'beaconId'
-      ]
-    }
-  ]
-})
-
-
-// initialize db and boot app
-influx.getDatabaseNames()
-  .then(names => {
-    if (!names.includes('weather_db')) {
-      return influx.createDatabase('weather_db')
-    }
-  })
-  .then(() => {
-    http.createServer(app).listen(8080, function() {
-      console.log('Listening on port 8080')
-    })
-  })
-  .catch(err => {
-    console.log(`Error creating Influx database! ${err.stack}`)
-  })
