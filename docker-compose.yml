@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    # build: ./src/
+    image: 'blairvee/rainyspring'
+    ports:
+      - "8080:8080"
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+    environment:
+      DB_HOSTNAME: 'influxdb'
+  influxdb:
+    image: influxdb
+    ports:
+      - "8086:8086"
